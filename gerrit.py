@@ -271,7 +271,11 @@ def submit_review( score, message ):
     process = subprocess.Popen('git rev-parse HEAD', stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     output, error = process.communicate()
     commit = output.strip()
-    msg = "'%s'"%message
+    if not message:
+    	msg = "''"
+    else:
+    	msg = "'%s'"%message
+
     subprocess.call(['ssh', '-p 29418',
         'gerrit.wikimedia.org', 'gerrit', 'review',
         '--code-review', score, '--message', msg, commit])
